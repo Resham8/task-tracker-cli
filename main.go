@@ -30,6 +30,7 @@ func main() {
 	args := os.Args
 
 	loadTasks()
+
 	if len(args) < 3 {
 		fmt.Println("Usage: go run main.go add \"task description\"")
 		return
@@ -47,13 +48,15 @@ func main() {
 			return
 		}
 
-		description  := args[3]
-		updateTask(uint(id),description)
+		description := args[3]
+		updateTask(uint(id), description)
 	}
 
 }
+
 func loadTasks() error {
 	data, err := os.ReadFile("tasks.json")
+
 	if err != nil {
 		return nil
 	}
@@ -63,6 +66,7 @@ func loadTasks() error {
 
 func saveTasks() error {
 	data, err := json.MarshalIndent(tasks, "", " ")
+
 	if err != nil {
 		return err
 	}
@@ -84,6 +88,16 @@ func addTask(description string) {
 	fmt.Println("Task added: ", tasks)
 }
 
-func updateTask(id uint, description string) {
+func updateTask(id uint, newDescription string) {
+	for i, task := range tasks {
+		if task.Id == id {
+			tasks[i].Description = newDescription
+			tasks[i].UpdatedAt = time.Now().Format("02 Jan 2006 03:04 PM")
+			saveTasks()
+			fmt.Println("Task updated: ", tasks[i])
+			return
+		}
+	}
 
+	fmt.Println("Task not found")
 }
