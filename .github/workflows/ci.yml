@@ -20,8 +20,6 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
-      
-     
 
       - name: Vet
         run: go vet ./...
@@ -49,7 +47,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: latest
+          version: v2.12.2
 
   cross-compile:
     name: Cross-compile (${{ matrix.goos }}/${{ matrix.goarch }})
